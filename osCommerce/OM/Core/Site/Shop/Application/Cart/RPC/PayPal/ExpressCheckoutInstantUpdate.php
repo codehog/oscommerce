@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Cart\RPC\PayPal;
 
@@ -17,7 +15,7 @@
   class ExpressCheckoutInstantUpdate {
     public static function execute() {
       $OSCOM_ShoppingCart = Registry::get('ShoppingCart');
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
       $OSCOM_Currencies = Registry::get('Currencies');
       $OSCOM_Tax = Registry::get('Tax');
 
@@ -39,11 +37,11 @@
         }
 
         if ( $OSCOM_ShoppingCart->hasContents() ) {
-          $Qcountry = $OSCOM_Database->query('select countries_id from :table_countries where countries_iso_code_2 = :countries_iso_code_2 limit 1');
+          $Qcountry = $OSCOM_PDO->prepare('select countries_id from :table_countries where countries_iso_code_2 = :countries_iso_code_2 limit 1');
           $Qcountry->bindValue(':countries_iso_code_2', $_POST['SHIPTOCOUNTRY']);
           $Qcountry->execute();
 
-          if ( $Qcountry->numberOfRows() ) {
+          if ( $Qcountry->fetch() !== false ) {
             $address = array('firstname' => '',
                              'lastname' => '',
                              'gender' => '',
@@ -58,13 +56,13 @@
                              'telephone' => '',
                              'fax' => '');
 
-            $Qzone = $OSCOM_Database->query('select * from :table_zones where zone_country_id = :zone_country_id and (zone_name = :zone_name or zone_code = :zone_code) limit 1');
+            $Qzone = $OSCOM_PDO->prepare('select * from :table_zones where zone_country_id = :zone_country_id and (zone_name = :zone_name or zone_code = :zone_code) limit 1');
             $Qzone->bindInt(':zone_country_id', $address['country_id']);
             $Qzone->bindValue(':zone_name', $address['state']);
             $Qzone->bindValue(':zone_code', $address['state']);
             $Qzone->execute();
 
-            if ( $Qzone->numberOfRows() ) {
+            if ( $Qzone->fetch() !== false ) {
               $address['zone_id'] = $Qzone->valueInt('zone_id');
               $address['state'] = $Qzone->value('zone_name');
             }

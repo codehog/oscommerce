@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Service;
 
@@ -15,23 +13,18 @@
 
   class SimpleCounter implements \osCommerce\OM\Core\Site\Shop\ServiceInterface {
     public static function start() {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qcounter = $OSCOM_Database->query('select startdate, counter from :table_counter');
+      $Qcounter = $OSCOM_PDO->query('select startdate, counter from :table_counter');
       $Qcounter->execute();
 
-      if ( $Qcounter->numberOfRows() ) {
-        $counter_startdate = $Qcounter->value('startdate');
-        $counter_now = $Qcounter->valueInt('counter') + 1;
+      $result = $Qcounter->fetchAll();
 
-        $Qcounterupdate = $OSCOM_Database->query('update :table_counter set counter = counter+1');
-        $Qcounterupdate->execute();
+      if ( count($result) > 0 ) {
+        $OSCOM_PDO->exec('update :table_counter set counter = counter+1');
       } else {
-        $counter_startdate = DateTime::getNow();
-        $counter_now = 1;
-
-        $Qcounterupdate = $OSCOM_Database->query('insert into :table_counter (startdate, counter) values (:start_date, 1)');
-        $Qcounterupdate->bindValue(':start_date', $counter_startdate);
+        $Qcounterupdate = $OSCOM_PDO->prepare('insert into :table_counter (startdate, counter) values (:start_date, 1)');
+        $Qcounterupdate->bindValue(':start_date', DateTime::getNow());
         $Qcounterupdate->execute();
       }
 

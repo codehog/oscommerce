@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Service;
 
@@ -32,7 +30,7 @@
 
       header('Content-Type: text/html; charset=' . $OSCOM_Language->getCharacterSet());
 
-      osc_setlocale(LC_TIME, explode(',', $OSCOM_Language->getLocale()));
+      setlocale(LC_TIME, explode(',', $OSCOM_Language->getLocale()));
 
       return true;
     }

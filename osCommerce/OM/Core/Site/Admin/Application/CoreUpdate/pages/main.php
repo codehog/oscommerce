@@ -1,17 +1,16 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
-
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
 ?>
 
-<h1><?php echo $OSCOM_Template->getIcon(32) . osc_link_object(OSCOM::getLink(), $OSCOM_Template->getPageTitle()); ?></h1>
+<h1><?php echo $OSCOM_Template->getIcon(32) . HTML::link(OSCOM::getLink(), $OSCOM_Template->getPageTitle()); ?></h1>
 
 <?php
   if ( $OSCOM_MessageStack->exists() ) {
@@ -20,7 +19,7 @@
 ?>
 
 <form id="liveSearchForm">
-  <input type="text" id="liveSearchField" name="search" class="searchField fieldTitleAsDefault" title="Search.." /><?php echo osc_draw_button(array('type' => 'button', 'params' => 'onclick="osC_DataTable.reset();"', 'title' => 'Reset')); ?>
+  <input type="text" id="liveSearchField" name="search" class="searchField fieldTitleAsDefault" title="Search.." /><?php echo HTML::button(array('type' => 'button', 'params' => 'onclick="osC_DataTable.reset();"', 'title' => 'Reset')); ?>
 </form>
 
 <div style="padding: 20px 5px 5px 5px; height: 16px;">
@@ -46,7 +45,7 @@
 </table>
 
 <div style="padding: 5px;">
-  <span id="dataTableLegend"><?php echo '<b>' . OSCOM::getDef('table_action_legend') . '</b> ' . osc_icon('folder_contents.png', OSCOM::getDef('icon_view_contents')) . '&nbsp;' . OSCOM::getDef('icon_view_contents'); ?></span>
+  <span id="dataTableLegend"><?php echo '<b>' . OSCOM::getDef('table_action_legend') . '</b> ' . HTML::icon('newsletters.png', OSCOM::getDef('icon_view_announcement')) . '&nbsp;' . OSCOM::getDef('icon_view_announcement') . ' ' . HTML::icon('folder_contents.png', OSCOM::getDef('icon_view_contents')) . '&nbsp;' . OSCOM::getDef('icon_view_contents'); ?></span>
   <span id="batchPullDownMenu"></span>
 </div>
 
@@ -65,8 +64,10 @@
   var dataTableName = 'coreUpdateDataTable';
   var dataTableDataURL = '<?php echo OSCOM::getRPCLink(null, null, 'GetAvailablePackages'); ?>';
 
+  var announcementIcon = '<?php echo HTML::icon('newsletters.png', OSCOM::getDef('icon_view_announcement')); ?>';
+
   var updateInstallLink = '<?php echo OSCOM::getLink(null, null, 'Apply&v=VCODE'); ?>';
-  var updateInstallLinkIcon = '<?php echo osc_icon('folder_contents.png', OSCOM::getDef('icon_view_contents')); ?>';
+  var updateInstallLinkIcon = '<?php echo HTML::icon('folder_contents.png', OSCOM::getDef('icon_view_contents')); ?>';
 
   var osC_DataTable = new osC_DataTable();
   osC_DataTable.load();
@@ -88,11 +89,23 @@
       var newCell = newRow.insertCell(1);
       newCell.innerHTML = htmlSpecialChars(record.date);
 
-      newCell = newRow.insertCell(2);
-      if ( record.update_package ) {
-        newCell.innerHTML = '<a href="' + updateInstallLink.replace('VCODE', htmlSpecialChars(record.version)) + '">' + updateInstallLinkIcon + '</a>';
-        newCell.align = 'right';
+      var actions = '';
+
+      if ( record.announcement ) {
+        actions += '<a href="' + record.announcement + '" target="_blank">' + announcementIcon + '</a>';
       }
+
+      if ( record.update_package ) {
+        if ( record.announcement ) {
+          actions += '&nbsp;'
+        }
+
+        actions += '<a href="' + updateInstallLink.replace('VCODE', htmlSpecialChars(record.version)) + '">' + updateInstallLinkIcon + '</a>';
+      }
+
+      newCell = newRow.insertCell(2);
+      newCell.innerHTML = actions;
+      newCell.align = 'right';
 
       rowCounter++;
     }

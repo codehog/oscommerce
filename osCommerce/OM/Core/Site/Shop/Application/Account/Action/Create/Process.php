@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Account\Action\Create;
 
@@ -56,7 +54,7 @@
       }
 
       if ( isset($_POST['email_address']) && (strlen(trim($_POST['email_address'])) >= ACCOUNT_EMAIL_ADDRESS) ) {
-        if ( osc_validate_email_address($_POST['email_address']) ) {
+        if ( filter_var($_POST['email_address'], FILTER_VALIDATE_EMAIL) ) {
           if ( Account::checkEntry($_POST['email_address']) === false ) {
             $data['email_address'] = $_POST['email_address'];
           } else {
@@ -82,7 +80,7 @@
           $OSCOM_MessageStack->add('Create', OSCOM::getDef('success_account_updated'), 'success');
         }
 
-        osc_redirect(OSCOM::getLink(null, null, 'Create&Success', 'SSL'));
+        OSCOM::redirect(OSCOM::getLink(null, null, 'Create&Success', 'SSL'));
       }
     }
   }

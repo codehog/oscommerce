@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin\Application\ServerInfo\Model;
 
@@ -44,7 +42,7 @@
                           'value' => 'PHP v' . PHP_VERSION . ' / Zend v' . zend_version()),
                     array('key' => 'db_server',
                           'title' => OSCOM::getDef('field_database_host'),
-                          'value' => DB_SERVER . ' (' . gethostbyname(DB_SERVER) . ')'),
+                          'value' => OSCOM::getConfig('db_server') . ' (' . gethostbyname(OSCOM::getConfig('db_server')) . ')'),
                     array('key' => 'db_version',
                           'title' => OSCOM::getDef('field_database_version'),
                           'value' => $db_version),

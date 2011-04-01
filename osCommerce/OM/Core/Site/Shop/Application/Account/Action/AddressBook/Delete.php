@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Account\Action\AddressBook;
 
@@ -31,7 +29,7 @@
       }
 
       if ( $OSCOM_MessageStack->size('AddressBook') > 0 ) {
-        osc_redirect(OSCOM::getLink(null, null, 'AddressBook', 'SSL'));
+        OSCOM::redirect(OSCOM::getLink(null, null, 'AddressBook', 'SSL'));
       }
 
       if ( $OSCOM_Service->isStarted('Breadcrumb') ) {

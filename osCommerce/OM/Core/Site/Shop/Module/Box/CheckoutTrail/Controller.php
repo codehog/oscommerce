@@ -1,17 +1,16 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Box\CheckoutTrail;
 
-  use osCommerce\OM\Core\Registry;
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
+  use osCommerce\OM\Core\Registry;
 
   class Controller extends \osCommerce\OM\Core\Modules {
     var $_title,
@@ -48,17 +47,17 @@
                        'active' => ($OSCOM_Template->getModule() == 'Success' ? true : false));
 
 
-      $content = osc_image('templates/' . $OSCOM_Template->getCode() . '/images/icons/32x32/checkout_preparing_to_ship.gif') . '<br />';
+      $content = HTML::image('templates/' . $OSCOM_Template->getCode() . '/images/icons/32x32/checkout_preparing_to_ship.gif') . '<br />';
 
       $counter = 0;
 
       foreach ( $steps as $step ) {
         $counter++;
 
-        $content .= '<span style="white-space: nowrap;">&nbsp;' . osc_image('templates/' . $OSCOM_Template->getCode() . '/images/icons/24x24/checkout_' . $counter . ($step['active'] === true ? '_on' : '') . '.gif', $step['title'], 24, 24, 'align="absmiddle"');
+        $content .= '<span style="white-space: nowrap;">&nbsp;' . HTML::image('templates/' . $OSCOM_Template->getCode() . '/images/icons/24x24/checkout_' . $counter . ($step['active'] === true ? '_on' : '') . '.gif', $step['title'], 24, 24, 'align="absmiddle"');
 
         if ( isset($step['code']) ) {
-          $content .= osc_link_object(OSCOM::getLink(null, 'Checkout', $step['code'], 'SSL'), $step['title'], 'class="boxCheckoutTrail' . ($step['active'] === true ? 'Active' : '') . '"');
+          $content .= HTML::link(OSCOM::getLink(null, 'Checkout', $step['code'], 'SSL'), $step['title'], 'class="boxCheckoutTrail' . ($step['active'] === true ? 'Active' : '') . '"');
         } else {
           $content .= '<span class="boxCheckoutTrail' . ($step['active'] === true ? 'Active' : '') . '">' . $step['title'] . '</span>';
         }
@@ -66,7 +65,7 @@
         $content .= '</span><br />';
       }
 
-      $content .= osc_image('templates/' . $OSCOM_Template->getCode() . '/images/icons/32x32/checkout_ready_to_ship.gif');
+      $content .= HTML::image('templates/' . $OSCOM_Template->getCode() . '/images/icons/32x32/checkout_ready_to_ship.gif');
 
       $this->_content = $content;
     }

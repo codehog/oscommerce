@@ -1,15 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Box\Currencies;
 
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Registry;
 
@@ -34,19 +33,19 @@
                         'text' => $value['title']);
       }
 
-      if ( sizeof($data) > 1 ) {
-        $hidden_get_variables = '';
+      if ( count($data) > 1 ) {
+        $hidden_get_params = '';
 
         foreach ( $_GET as $key => $value ) {
           if ( ($key != 'currency') && ($key != Registry::get('Session')->getName()) && ($key != 'x') && ($key != 'y') ) {
-            $hidden_get_variables .= osc_draw_hidden_field($key, $value);
+            $hidden_get_params .= HTML::hiddenField($key, $value);
           }
         }
 
         $this->_content = '<form name="currencies" action="' . OSCOM::getLink(null, null, null, 'AUTO', false) . '" method="get">' .
-                          $hidden_get_variables .
-                          osc_draw_pull_down_menu('currency', $data, $_SESSION['currency'], 'onchange="this.form.submit();" style="width: 100%"') .
-                          osc_draw_hidden_session_id_field() .
+                          $hidden_get_params .
+                          HTML::selectMenu('currency', $data, $_SESSION['currency'], 'onchange="this.form.submit();" style="width: 100%"') .
+                          HTML::hiddenSessionIDField() .
                           '</form>';
       }
     }

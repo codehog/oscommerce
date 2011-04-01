@@ -1,14 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core;
+
+  use osCommerce\OM\Core\HTML;
 
 /**
  * The osC_ObjectInfo class wraps an object instance around an array data set
@@ -55,7 +55,7 @@
  */
 
     public function getProtected($key) {
-      return osc_output_string_protected($this->_data[$key]);
+      return HTML::outputProtected($this->_data[$key]);
     }
 
 /**
@@ -100,6 +100,10 @@
 
     public function exists($key) {
       return isset($this->_data[$key]);
+    }
+
+    public static function to($array) {
+      return new static($array);
     }
   }
 ?>

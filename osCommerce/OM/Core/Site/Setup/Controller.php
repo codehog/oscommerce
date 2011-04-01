@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Setup;
 
@@ -17,15 +15,6 @@
     protected static $_default_application = 'Index';
 
     public static function initialize() {
-      define('OSCOM_BOOTSTRAP_FILE', 'index.php');
-      define('HTTP_SERVER', '');
-      define('HTTP_COOKIE_PATH', '');
-      define('HTTP_COOKIE_DOMAIN', '');
-      define('DIR_WS_HTTP_CATALOG', '');
-      define('DIR_WS_IMAGES', '');
-      define('DB_SERVER_PERSISTENT_CONNECTIONS', false);
-      define('DIR_FS_WORK', OSCOM::BASE_DIRECTORY . 'work/');
-
       Registry::set('Language', new Language());
       Registry::set('osC_Language', Registry::get('Language')); // HPDL to remove
 

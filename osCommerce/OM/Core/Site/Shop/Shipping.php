@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop;
 
@@ -20,7 +18,7 @@
 
     public function __construct($module = null) {
       $OSCOM_ShoppingCart = Registry::get('ShoppingCart');
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
       $OSCOM_Language = Registry::get('Language');
 
       $do_shipping = false;
@@ -37,15 +35,13 @@
       if ( $do_shipping === true ) {
         $this->_quotes =& $_SESSION['osC_ShoppingCart_data']['shipping_quotes'];
 
-        $Qmodules = $OSCOM_Database->query('select code from :table_templates_boxes where modules_group = "shipping"');
+        $Qmodules = $OSCOM_PDO->query('select code from :table_modules where modules_group = "Shipping"');
         $Qmodules->setCache('modules-shipping');
         $Qmodules->execute();
 
-        while ( $Qmodules->next() ) {
+        while ( $Qmodules->fetch() ) {
           $this->_modules[] = $Qmodules->value('code');
         }
-
-        $Qmodules->freeResult();
 
         if ( !empty($this->_modules) ) {
           if ( !empty($module) && in_array(substr($module, 0, strpos($module, '_')), $this->_modules) ) {

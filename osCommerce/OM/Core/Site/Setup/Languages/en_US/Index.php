@@ -1,9 +1,7 @@
-# osCommerce Online Merchant $osCommerce-SIG$
-# Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
+# osCommerce Online Merchant
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License v2 (1991)
-# as published by the Free Software Foundation.
+# @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+# @license BSD License; http://www.oscommerce.com/bsdlicense.txt
 
 page_title_welcome = Welcome To Your New Online Store!
 
@@ -24,8 +22,9 @@ box_server_file_uploads = file_uploads
 box_server_session_auto_start = session.auto_start
 box_server_session_use_trans_sid = session.use_trans_sid
 box_server_php_extensions = PHP Extensions
-box_server_mysqli = MySQLi
-box_server_sqlite3 = SQLite3
+box_server_pdo_mysql = PDO MySQL
+box_server_pdo_sqlite = PDO SQLite
+box_server_phar = Phar
 box_server_gd = GD
 box_server_curl = cURL
 box_server_openssl = OpenSSL

@@ -1,15 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Shipping;
 
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Registry;
 
@@ -30,7 +29,7 @@
     }
 
     public function initialize() {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
       $OSCOM_ShoppingCart = Registry::get('ShoppingCart');
 
       $this->tax_class = MODULE_SHIPPING_FLAT_TAX_CLASS;
@@ -38,12 +37,12 @@
       if ( ($this->_status === true) && ((int)MODULE_SHIPPING_FLAT_ZONE > 0) ) {
         $check_flag = false;
 
-        $Qcheck = $OSCOM_Database->query('select zone_id from :table_zones_to_geo_zones where geo_zone_id = :geo_zone_id and zone_country_id = :zone_country_id order by zone_id');
+        $Qcheck = $OSCOM_PDO->prepare('select zone_id from :table_zones_to_geo_zones where geo_zone_id = :geo_zone_id and zone_country_id = :zone_country_id order by zone_id');
         $Qcheck->bindInt(':geo_zone_id', MODULE_SHIPPING_FLAT_ZONE);
         $Qcheck->bindInt(':zone_country_id', $OSCOM_ShoppingCart->getShippingAddress('country_id'));
         $Qcheck->execute();
 
-        while ( $Qcheck->next() ) {
+        while ( $Qcheck->fetch() ) {
           if ( $Qcheck->valueInt('zone_id') < 1 ) {
             $check_flag = true;
             break;
@@ -67,7 +66,7 @@
                                                      'cost' => MODULE_SHIPPING_FLAT_COST)),
                             'tax_class_id' => $this->tax_class);
 
-      if (!empty($this->icon)) $this->quotes['icon'] = osc_image($this->icon, $this->_title);
+      if (!empty($this->icon)) $this->quotes['icon'] = HTML::image($this->icon, $this->_title);
 
       return $this->quotes;
     }

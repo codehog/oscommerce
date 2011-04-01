@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop;
 
@@ -18,18 +16,16 @@
     protected $_group = 'order_total';
 
     public function __construct() {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
       $OSCOM_Language = Registry::get('Language');
 
-      $Qmodules = $OSCOM_Database->query('select code from :table_templates_boxes where modules_group = "order_total"');
+      $Qmodules = $OSCOM_PDO->query('select code from :table_modules where modules_group = "OrderTotal"');
       $Qmodules->setCache('modules-order_total');
       $Qmodules->execute();
 
-      while ( $Qmodules->next() ) {
+      while ( $Qmodules->fetch() ) {
         $this->_modules[] = $Qmodules->value('code');
       }
-
-      $Qmodules->freeResult();
 
       $OSCOM_Language->load('modules-order_total');
 

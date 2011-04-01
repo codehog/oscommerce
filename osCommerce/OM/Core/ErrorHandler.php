@@ -1,22 +1,21 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core;
 
-  use osCommerce\OM\Core\DatabasePDO;
+  use osCommerce\OM\Core\OSCOM;
+  use osCommerce\OM\Core\PDO;
 
   class ErrorHandler {
     static protected $_dbh;
 
     public static function initialize() {
-      if ( in_array('sqlite', DatabasePDO::getAvailableDrivers()) && is_writable(OSCOM::BASE_DIRECTORY . 'Work/Logs') ) {
+      if ( in_array('sqlite', PDO::getAvailableDrivers()) && is_writable(OSCOM::BASE_DIRECTORY . 'Work/Logs') ) {
         ini_set('display_errors', false);
         ini_set('log_errors', true);
         ini_set('error_log', OSCOM::BASE_DIRECTORY . 'Work/Logs/errors.txt');
@@ -64,7 +63,7 @@
     }
 
     public static function connect() {
-      self::$_dbh = DatabasePDO::initialize(OSCOM::BASE_DIRECTORY . 'Work/Database/errors.sqlite3', null, null, null, null, 'SQLite3');
+      self::$_dbh = PDO::initialize(OSCOM::BASE_DIRECTORY . 'Work/Database/errors.sqlite3', null, null, null, null, 'SQLite3');
 
       self::$_dbh->exec('create table if not exists error_log ( timestamp int, message text );');
     }

@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Payment;
 
@@ -16,7 +14,7 @@
 
   class COD extends \osCommerce\OM\Core\Site\Shop\PaymentModuleAbstract {
     protected function initialize() {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
       $OSCOM_ShoppingCart = Registry::get('ShoppingCart');
 
       $this->_title = OSCOM::getDef('payment_cod_title');
@@ -32,12 +30,12 @@
         if ( (int)MODULE_PAYMENT_COD_ZONE > 0 ) {
           $check_flag = false;
 
-          $Qcheck = $OSCOM_Database->query('select zone_id from :table_zones_to_geo_zones where geo_zone_id = :geo_zone_id and zone_country_id = :zone_country_id order by zone_id');
+          $Qcheck = $OSCOM_PDO->prepare('select zone_id from :table_zones_to_geo_zones where geo_zone_id = :geo_zone_id and zone_country_id = :zone_country_id order by zone_id');
           $Qcheck->bindInt(':geo_zone_id', MODULE_PAYMENT_COD_ZONE);
           $Qcheck->bindInt(':zone_country_id', $OSCOM_ShoppingCart->getBillingAddress('country_id'));
           $Qcheck->execute();
 
-          while ( $Qcheck->next() ) {
+          while ( $Qcheck->fetch() ) {
             if ( $Qcheck->valueInt('zone_id') < 1 ) {
               $check_flag = true;
               break;

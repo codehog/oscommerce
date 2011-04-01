@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Products\Action\Reviews;
 
@@ -56,7 +54,7 @@
       if ( ($OSCOM_Customer->isLoggedOn() === false) && (SERVICE_REVIEW_ENABLE_REVIEWS == 1) ) {
         $OSCOM_NavigationHistory->setSnapshot();
 
-        osc_redirect(OSCOM::getLink(null, 'Account', 'LogIn', 'SSL'));
+        OSCOM::redirect(OSCOM::getLink(null, 'Account', 'LogIn', 'SSL'));
       }
 
       Registry::set('Product', new Product($requested_product));
@@ -97,12 +95,12 @@
 
         Reviews::saveEntry($data);
 
-        osc_redirect(OSCOM::getLink(null, null, 'Reviews&' . $OSCOM_Product->getID()));
+        OSCOM::redirect(OSCOM::getLink(null, null, 'Reviews&' . $OSCOM_Product->getID()));
       }
 
       $application->setPageTitle($OSCOM_Product->getTitle());
       $application->setPageContent('reviews_write.php');
-      $OSCOM_Template->addJavascriptPhpFilename('templates/' . $OSCOM_Template->getCode() . '/javascript/products/reviews_new.php');
+      $OSCOM_Template->addJavascriptPhpFilename(OSCOM::BASE_DIRECTORY . 'Core/Site/Shop/assets/reviews_new.php');
 
       if ( $OSCOM_Service->isStarted('Breadcrumb')) {
         $OSCOM_Breadcrumb->add($OSCOM_Product->getTitle(), OSCOM::getLink(null, null, 'Reviews&' . $OSCOM_Product->getKeyword()));

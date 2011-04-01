@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Service;
 
@@ -22,7 +20,7 @@
       $OSCOM_Session->setLifeTime(SERVICE_SESSION_EXPIRATION_TIME * 60);
 
       if ( (SERVICE_SESSION_FORCE_COOKIE_USAGE == '1') || ((bool)ini_get('session.use_only_cookies') === true) ) {
-        osc_setcookie('cookie_test', 'please_accept_for_session', time()+60*60*24*90);
+        OSCOM::setCookie('cookie_test', 'please_accept_for_session', time()+60*60*24*90);
 
         if ( isset($_COOKIE['cookie_test']) ) {
           $OSCOM_Session->start();
@@ -32,7 +30,7 @@
         $spider_flag = false;
 
         if ( !empty($user_agent) ) {
-          $spiders = file('includes/spiders.txt');
+          $spiders = file(OSCOM::BASE_DIRECTORY . 'Core/Site/Shop/assets/spiders.txt');
 
           foreach ( $spiders as $spider ) {
             if ( !empty($spider) ) {
@@ -52,7 +50,7 @@
       }
 
 // verify the ssl_session_id
-      if ( (OSCOM::getRequestType() == 'SSL') && (SERVICE_SESSION_CHECK_SSL_SESSION_ID == '1') && (ENABLE_SSL == true) ) {
+      if ( (OSCOM::getRequestType() == 'SSL') && (SERVICE_SESSION_CHECK_SSL_SESSION_ID == '1') && (OSCOM::getConfig('enable_ssl') == 'true') ) {
         if ( isset($_SERVER['SSL_SESSION_ID']) && ctype_xdigit($_SERVER['SSL_SESSION_ID']) ) {
           if ( !isset($_SESSION['SESSION_SSL_ID']) ) {
             $_SESSION['SESSION_SSL_ID'] = $_SERVER['SSL_SESSION_ID'];
@@ -61,7 +59,7 @@
           if ( $_SESSION['SESSION_SSL_ID'] != $_SERVER['SSL_SESSION_ID'] ) {
             $OSCOM_Session->destroy();
 
-            osc_redirect(OSCOM::getLink(null, 'Info', 'SSLcheck', 'AUTO'));
+            OSCOM::redirect(OSCOM::getLink(null, 'Info', 'SSLcheck', 'AUTO'));
           }
         }
       }
@@ -77,20 +75,20 @@
         if ( $_SESSION['SESSION_USER_AGENT'] != $http_user_agent ) {
           $OSCOM_Session->destroy();
 
-          osc_redirect(osc_href_link(FILENAME_ACCOUNT, 'login', 'SSL'));
+          OSCOM::redirect(OSCOM::getLink(null, 'Account', 'LogIn', 'SSL'));
         }
       }
 
 // verify the IP address
       if ( SERVICE_SESSION_CHECK_IP_ADDRESS == '1' ) {
         if ( !isset($_SESSION['SESSION_IP_ADDRESS']) ) {
-          $_SESSION['SESSION_IP_ADDRESS'] = osc_get_ip_address();
+          $_SESSION['SESSION_IP_ADDRESS'] = OSCOM::getIPAddress();
         }
 
-        if ( $_SESSION['SESSION_IP_ADDRESS'] != osc_get_ip_address() ) {
+        if ( $_SESSION['SESSION_IP_ADDRESS'] != OSCOM::getIPAddress() ) {
           $OSCOM_Session->destroy();
 
-          osc_redirect(osc_href_link(FILENAME_ACCOUNT, 'login', 'SSL'));
+          OSCOM::redirect(OSCOM::getLink(null, 'Account', 'LogIn', 'SSL'));
         }
       }
 

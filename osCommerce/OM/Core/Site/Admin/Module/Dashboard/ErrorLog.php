@@ -1,20 +1,19 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin\Module\Dashboard;
 
-  use osCommerce\OM\Core\Registry;
-  use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Access;
-  use osCommerce\OM\Core\ErrorHandler;
   use osCommerce\OM\Core\DateTime;
+  use osCommerce\OM\Core\ErrorHandler;
+  use osCommerce\OM\Core\HTML;
+  use osCommerce\OM\Core\OSCOM;
+  use osCommerce\OM\Core\Registry;
 
   class ErrorLog extends \osCommerce\OM\Core\Site\Admin\IndexModulesAbstract {
     public function __construct() {
@@ -42,14 +41,14 @@
           foreach ( ErrorHandler::getAll(6) as $row ) {
             $this->_data .= '    <tr onmouseover="$(this).addClass(\'mouseOver\');" onmouseout="$(this).removeClass(\'mouseOver\');"' . ($counter % 2 ? ' class="alt"' : '') . '>' .
                             '      <td style="white-space: nowrap;">' . $OSCOM_Template->getIcon(16, 'errorlog.png') . '&nbsp;' . DateTime::getShort(DateTime::fromUnixTimestamp($row['timestamp']), true) . '</td>' .
-                            '      <td>' . osc_output_string_protected(substr($row['message'], 0, 60)) . '..</td>' .
+                            '      <td>' . HTML::outputProtected(substr($row['message'], 0, 60)) . '..</td>' .
                             '    </tr>';
 
             $counter++;
           }
         } else {
           $this->_data .= '    <tr onmouseover="$(this).addClass(\'mouseOver\');" onmouseout="$(this).removeClass(\'mouseOver\');">' .
-                          '      <td colspan="2">' . osc_icon('tick.png') . '&nbsp;' . OSCOM::getDef('admin_dashboard_module_errorlog_no_errors_found') . '</td>' .
+                          '      <td colspan="2">' . HTML::icon('tick.png') . '&nbsp;' . OSCOM::getDef('admin_dashboard_module_errorlog_no_errors_found') . '</td>' .
                           '    </tr>';
         }
 

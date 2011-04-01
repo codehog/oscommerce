@@ -1,13 +1,12 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
-
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
 ?>
 
@@ -88,12 +87,16 @@
           <td align="right" width="25"></td>
         </tr>
         <tr>
-          <td><?php echo OSCOM::getDef('box_server_mysqli'); ?></td>
-          <td align="right"><img src="<?php echo OSCOM::getPublicSiteLink('templates/default/images/' . (extension_loaded('mysqli') ? 'tick.gif' : 'cross.gif')); ?>" alt="" border="0" width="16" height="16" /></td>
+          <td><?php echo OSCOM::getDef('box_server_pdo_mysql'); ?></td>
+          <td align="right"><img src="<?php echo OSCOM::getPublicSiteLink('templates/default/images/' . (extension_loaded('pdo_mysql') ? 'tick.gif' : 'cross.gif')); ?>" alt="" border="0" width="16" height="16" /></td>
         </tr>
         <tr>
-          <td><?php echo OSCOM::getDef('box_server_sqlite3'); ?></td>
-          <td align="right"><img src="<?php echo OSCOM::getPublicSiteLink('templates/default/images/' . (extension_loaded('sqlite3') ? 'tick.gif' : 'cross.gif')); ?>" alt="" border="0" width="16" height="16" /></td>
+          <td><?php echo OSCOM::getDef('box_server_pdo_sqlite'); ?></td>
+          <td align="right"><img src="<?php echo OSCOM::getPublicSiteLink('templates/default/images/' . (extension_loaded('pdo_sqlite') ? 'tick.gif' : 'cross.gif')); ?>" alt="" border="0" width="16" height="16" /></td>
+        </tr>
+        <tr>
+          <td><?php echo OSCOM::getDef('box_server_phar'); ?></td>
+          <td align="right"><img src="<?php echo OSCOM::getPublicSiteLink('templates/default/images/' . (extension_loaded('phar') ? 'tick.gif' : 'cross.gif')); ?>" alt="" border="0" width="16" height="16" /></td>
         </tr>
         <tr>
           <td><?php echo OSCOM::getDef('box_server_gd'); ?></td>
@@ -138,6 +141,6 @@
 
     <p><?php echo OSCOM::getDef('text_installation_type'); ?></p>
 
-    <p align="center"><?php echo osc_draw_button(array('href' => OSCOM::getLink(null, 'Install'), 'priority' => 'primary', 'icon' => 'triangle-1-e', 'title' => OSCOM::getDef('button_new_install'))); ?></p>
+    <p align="center"><?php echo HTML::button(array('href' => OSCOM::getLink(null, 'Install'), 'priority' => 'primary', 'icon' => 'triangle-1-e', 'title' => OSCOM::getDef('button_new_install'))); ?></p>
   </div>
 </div>

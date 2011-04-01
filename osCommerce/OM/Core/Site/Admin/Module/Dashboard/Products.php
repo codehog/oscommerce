@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin\Module\Dashboard;
 
@@ -43,12 +41,12 @@
                        '  </thead>' .
                        '  <tbody>';
 
-        $Qproducts = Registry::get('Database')->query('select products_id, greatest(products_date_added, products_last_modified) as date_last_modified from :table_products where parent_id is null order by date_last_modified desc limit 6');
+        $Qproducts = Registry::get('PDO')->query('select products_id, greatest(products_date_added, products_last_modified) as date_last_modified from :table_products where parent_id is null order by date_last_modified desc limit 6');
         $Qproducts->execute();
 
         $counter = 0;
 
-        while ( $Qproducts->next() ) {
+        while ( $Qproducts->fetch() ) {
           $data = osC_Products_Admin::get($Qproducts->valueInt('products_id'));
 
           $products_icon = osc_icon('products.png');

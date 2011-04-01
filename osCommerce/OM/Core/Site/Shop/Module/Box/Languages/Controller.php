@@ -1,15 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Box\Languages;
 
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Registry;
 
@@ -29,8 +28,22 @@
 
       $this->_content = '';
 
+      $get_params = array();
+
+      foreach ( $_GET as $key => $value ) {
+        if ( ($key != 'language') && ($key != Registry::get('Session')->getName()) && ($key != 'x') && ($key != 'y') ) {
+          $get_params[] = $key . '=' . $value;
+        }
+      }
+
+      $get_params = implode($get_params, '&');
+
+      if ( !empty($get_params) ) {
+        $get_params .= '&';
+      }
+
       foreach ( $OSCOM_Language->getAll() as $value ) {
-        $this->_content .= ' ' . osc_link_object(OSCOM::getLink(null, null, osc_get_all_get_params(array('language', 'currency')) . '&language=' . $value['code'], 'AUTO'), $OSCOM_Language->showImage($value['code'])) . ' ';
+        $this->_content .= ' ' . HTML::link(OSCOM::getLink(null, null, $get_params . 'language=' . $value['code'], 'AUTO'), $OSCOM_Language->showImage($value['code'])) . ' ';
       }
     }
   }

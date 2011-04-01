@@ -1,17 +1,16 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop;
 
-  use osCommerce\OM\Core\Registry;
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
+  use osCommerce\OM\Core\Registry;
 
 /**
  * The Address class handles address related functions such as the format and country and zone information
@@ -29,16 +28,16 @@
  */
 
     public static function format($address, $new_line = null) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
       $address_format = '';
 
       if ( is_numeric($address) ) {
-        $Qaddress = $OSCOM_Database->query('select ab.entry_firstname as firstname, ab.entry_lastname as lastname, ab.entry_company as company, ab.entry_street_address as street_address, ab.entry_suburb as suburb, ab.entry_city as city, ab.entry_postcode as postcode, ab.entry_state as state, ab.entry_zone_id as zone_id, ab.entry_country_id as country_id, z.zone_code as zone_code, c.countries_name as country_title from :table_address_book ab left join :table_zones z on (ab.entry_zone_id = z.zone_id), :table_countries c where ab.address_book_id = :address_book_id and ab.entry_country_id = c.countries_id');
+        $Qaddress = $OSCOM_PDO->prepare('select ab.entry_firstname as firstname, ab.entry_lastname as lastname, ab.entry_company as company, ab.entry_street_address as street_address, ab.entry_suburb as suburb, ab.entry_city as city, ab.entry_postcode as postcode, ab.entry_state as state, ab.entry_zone_id as zone_id, ab.entry_country_id as country_id, z.zone_code as zone_code, c.countries_name as country_title from :table_address_book ab left join :table_zones z on (ab.entry_zone_id = z.zone_id), :table_countries c where ab.address_book_id = :address_book_id and ab.entry_country_id = c.countries_id');
         $Qaddress->bindInt(':address_book_id', $address);
         $Qaddress->execute();
 
-        $address = $Qaddress->toArray();
+        $address = $Qaddress->fetch();
       }
 
       $firstname = $lastname = '';
@@ -83,19 +82,19 @@
                           '/\:state_code\b/',
                           '/\:country\b/');
 
-      $replace_array = array(osc_output_string_protected($firstname . ' ' . $lastname),
-                             osc_output_string_protected($address['street_address']),
-                             osc_output_string_protected($address['suburb']),
-                             osc_output_string_protected($address['city']),
-                             osc_output_string_protected($address['postcode']),
-                             osc_output_string_protected($state),
-                             osc_output_string_protected($state_code),
-                             osc_output_string_protected($country));
+      $replace_array = array(HTML::outputProtected($firstname . ' ' . $lastname),
+                             HTML::outputProtected($address['street_address']),
+                             HTML::outputProtected($address['suburb']),
+                             HTML::outputProtected($address['city']),
+                             HTML::outputProtected($address['postcode']),
+                             HTML::outputProtected($state),
+                             HTML::outputProtected($state_code),
+                             HTML::outputProtected($country));
 
       $formated = preg_replace($find_array, $replace_array, $address_format);
 
       if ( (ACCOUNT_COMPANY > -1) && !empty($address['company']) ) {
-        $formated = osc_output_string_protected($address['company']) . "\n" . $formated;
+        $formated = HTML::outputProtected($address['company']) . "\n" . $formated;
       }
 
       if ( !empty($new_line) ) {
@@ -113,17 +112,17 @@
  */
 
     public static function getCountries() {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
       static $countries;
 
       if ( !isset($countries) ) {
         $countries = array();
 
-        $Qcountries = $OSCOM_Database->query('select * from :table_countries order by countries_name');
+        $Qcountries = $OSCOM_PDO->query('select * from :table_countries order by countries_name');
         $Qcountries->execute();
 
-        while ( $Qcountries->next() ) {
+        while ( $Qcountries->fetch() ) {
           $countries[] = array('id' => $Qcountries->valueInt('countries_id'),
                                'name' => $Qcountries->value('countries_name'),
                                'iso_2' => $Qcountries->value('countries_iso_code_2'),
@@ -144,9 +143,9 @@
  */
 
     public static function getCountryName($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qcountry = $OSCOM_Database->query('select countries_name from :table_countries where countries_id = :countries_id');
+      $Qcountry = $OSCOM_PDO->prepare('select countries_name from :table_countries where countries_id = :countries_id');
       $Qcountry->bindInt(':countries_id', $id);
       $Qcountry->execute();
 
@@ -162,9 +161,9 @@
  */
 
     public static function getCountryIsoCode2($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qcountry = $OSCOM_Database->query('select countries_iso_code_2 from :table_countries where countries_id = :countries_id');
+      $Qcountry = $OSCOM_PDO->prepare('select countries_iso_code_2 from :table_countries where countries_id = :countries_id');
       $Qcountry->bindInt(':countries_id', $id);
       $Qcountry->execute();
 
@@ -180,9 +179,9 @@
  */
 
     public static function getCountryIsoCode3($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qcountry = $OSCOM_Database->query('select countries_iso_code_3 from :table_countries where countries_id = :countries_id');
+      $Qcountry = $OSCOM_PDO->prepare('select countries_iso_code_3 from :table_countries where countries_id = :countries_id');
       $Qcountry->bindInt(':countries_id', $id);
       $Qcountry->execute();
 
@@ -198,9 +197,9 @@
  */
 
     public static function getFormat($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qcountry = $OSCOM_Database->query('select address_format from :table_countries where countries_id = :countries_id');
+      $Qcountry = $OSCOM_PDO->prepare('select address_format from :table_countries where countries_id = :countries_id');
       $Qcountry->bindInt(':countries_id', $id);
       $Qcountry->execute();
 
@@ -216,9 +215,9 @@
  */
 
     public static function getZoneName($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qzone = $OSCOM_Database->query('select zone_name from :table_zones where zone_id = :zone_id');
+      $Qzone = $OSCOM_PDO->prepare('select zone_name from :table_zones where zone_id = :zone_id');
       $Qzone->bindInt(':zone_id', $id);
       $Qzone->execute();
 
@@ -234,9 +233,9 @@
  */
 
     public static function getZoneCode($id) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qzone = $OSCOM_Database->query('select zone_code from :table_zones where zone_id = :zone_id');
+      $Qzone = $OSCOM_PDO->prepare('select zone_code from :table_zones where zone_id = :zone_id');
       $Qzone->bindInt(':zone_id', $id);
       $Qzone->execute();
 
@@ -252,21 +251,28 @@
  */
 
     public static function getZones($id = null) {
-      $OSCOM_Database = Registry::get('Database');
+      $OSCOM_PDO = Registry::get('PDO');
 
       $zones_array = array();
 
-      $Qzones = $OSCOM_Database->query('select z.zone_id, z.zone_country_id, z.zone_name, c.countries_name from :table_zones z, :table_countries c where');
+      $sql_query = 'select z.zone_id, z.zone_country_id, z.zone_name, c.countries_name from :table_zones z, :table_countries c where';
 
       if ( !empty($id) ) {
-        $Qzones->appendQuery('z.zone_country_id = :zone_country_id and');
-        $Qzones->bindInt(':zone_country_id', $id);
+        $sql_query .= ' z.zone_country_id = :zone_country_id and';
       }
 
-      $Qzones->appendQuery('z.zone_country_id = c.countries_id order by c.countries_name, z.zone_name');
+      $sql_query .= ' z.zone_country_id = c.countries_id order by c.countries_name, z.zone_name';
+
+      if ( !empty($id) ) {
+        $Qzones = $OSCOM_PDO->prepare($sql_query);
+        $Qzones->bindInt(':zone_country_id', $id);
+      } else {
+        $Qzones = $OSCOM_PDO->query($sql_query);
+      }
+
       $Qzones->execute();
 
-      while ( $Qzones->next() ) {
+      while ( $Qzones->fetch() ) {
         $zones_array[] = array('id' => $Qzones->valueInt('zone_id'),
                                'name' => $Qzones->value('zone_name'),
                                'country_id' => $Qzones->valueInt('zone_country_id'),

@@ -1,15 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Box\Search;
 
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
 
   class Controller extends \osCommerce\OM\Core\Modules {
@@ -26,8 +25,8 @@
     function initialize() {
       $this->_title_link = OSCOM::getLink(null, 'Search');
 
-      $this->_content = '<form name="search" action="' . OSCOM::getLink() . '" method="get">' . osc_draw_hidden_field('Search', null) .
-                        osc_draw_input_field('Q', null, 'style="width: 80%;" maxlength="30"') . '&nbsp;' . osc_draw_hidden_session_id_field() . osc_draw_image_submit_button('button_quick_find.gif', OSCOM::getDef('box_search_heading')) . '<br />' . sprintf(OSCOM::getDef('box_search_text'), OSCOM::getLink(null, 'Search')) .
+      $this->_content = '<form name="search" action="' . OSCOM::getLink() . '" method="get">' . HTML::hiddenField('Search', null) .
+                        HTML::inputField('Q', null, 'style="width: 80%;" maxlength="30"') . '&nbsp;' . HTML::hiddenSessionIDField() . HTML::button(array('icon' => 'search', 'title' => OSCOM::getDef('box_search_heading'))) .
                         '</form>';
     }
   }

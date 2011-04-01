@@ -1,14 +1,15 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core;
+
+  use osCommerce\OM\Core\HTML;
+  use osCommerce\OM\Core\OSCOM;
 
 /**
  * The Template class defines or adds elements to the page output such as the page title, page content, and javascript blocks
@@ -88,7 +89,7 @@
  * @access protected
  */
 
-    protected $_javascript_filenames = array('includes/general.js');
+    protected $_javascript_filenames = array('public/sites/Shop/javascript/general.js');
 
 /**
  * Holds javascript PHP filenames to be included in the page
@@ -156,43 +157,6 @@
  */
 
     protected $_show_debug_messages = true;
-
-/**
- * Setup the template class with the requested page module
- *
- * @param string $module The default page module to setup
- * @return object
- */
-
-    public static function setup($module) {
-      $group = basename($_SERVER['SCRIPT_FILENAME']);
-
-      if (($pos = strrpos($group, '.')) !== false) {
-        $group = substr($group, 0, $pos);
-      }
-
-      if (empty($_GET) === false) {
-        $first_array = array_slice($_GET, 0, 1);
-        $_module = osc_sanitize_string(basename(key($first_array)));
-
-        if (file_exists('includes/content/' . $group . '/' . $_module . '.php')) {
-          $module = $_module;
-        }
-      }
-
-      include('includes/content/' . $group . '/' . $module . '.php');
-
-      $_page_module_name = 'osC_' . ucfirst($group) . '_' . ucfirst($module);
-      $object = new $_page_module_name();
-
-      if ( isset($_GET['action']) && !empty($_GET['action']) ) {
-        include('includes/classes/actions.php');
-
-        osC_Actions::parse($_GET['action']);
-      }
-
-      return $object;
-    }
 
     public function setApplication(ApplicationAbstract $application) {
       $this->_application = $application;
@@ -266,7 +230,7 @@
  */
 
     function getPageTitle() {
-      return osc_output_string_protected($this->_application->getPageTitle());
+      return HTML::outputProtected($this->_application->getPageTitle());
     }
 
 /**

@@ -1,46 +1,30 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin;
 
+  use osCommerce\OM\Core\Access;
+  use osCommerce\OM\Core\Cache;
+  use osCommerce\OM\Core\PDO;
   use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Registry;
-  use osCommerce\OM\Core\Cache;
-  use osCommerce\OM\Core\Database;
   use osCommerce\OM\Core\Session;
-  use osCommerce\OM\Core\Access;
-
-  use osCommerce\OM\Core\DatabasePDO;
-
-  define('OSC_IN_ADMIN', true);
-
-  require(OSCOM::BASE_DIRECTORY . 'Core/Site/Admin/includes/functions/general.php');
-  require(OSCOM::BASE_DIRECTORY . 'Core/Site/Admin/includes/functions/html_output.php');
-  require(OSCOM::BASE_DIRECTORY . 'Core/Site/Admin/includes/functions/localization.php');
 
   class Controller implements \osCommerce\OM\Core\SiteInterface {
     protected static $_default_application = 'Dashboard';
     protected static $_guest_applications = array('Dashboard', 'Login');
 
     public static function initialize() {
-      if ( strlen(DB_SERVER) < 1 ) {
-        osc_redirect(OSCOM::getLink('Setup'));
-      }
-
       Registry::set('MessageStack', new MessageStack());
       Registry::set('Cache', new Cache());
-      Registry::set('Database', Database::initialize());
+      Registry::set('PDO', PDO::initialize());
 
-      Registry::set('PDO', DatabasePDO::initialize());
-
-      foreach ( OSCOM::callDB('Admin\GetConfiguration', null, 'Site') as $param ) {
+      foreach ( OSCOM::callDB('Shop\GetConfiguration', null, 'Site') as $param ) {
         define($param['cfgKey'], $param['cfgValue']);
       }
 
@@ -54,7 +38,7 @@
       if ( !self::hasAccess(OSCOM::getSiteApplication()) ) {
         Registry::get('MessageStack')->add('header', 'No access.', 'error');
 
-        osc_redirect_admin(OSCOM::getLink(null, OSCOM::getDefaultSiteApplication()));
+        OSCOM::redirect(OSCOM::getLink(null, OSCOM::getDefaultSiteApplication()));
       }
 
       $application = 'osCommerce\\OM\\Core\\Site\\Admin\\Application\\' . OSCOM::getSiteApplication() . '\\Controller';
@@ -94,7 +78,7 @@
         }
 
         if ( $redirect === true ) {
-          osc_redirect_admin(OSCOM::getLink(null, 'Login'));
+          OSCOM::redirect(OSCOM::getLink(null, 'Login'));
         }
       }
 

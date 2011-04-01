@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin;
 
@@ -141,24 +139,6 @@
       }
 
       return $this->getData($id, 'code');
-    }
-
-    function showImage($code = null, $width = '16', $height = '10', $parameters = null) {
-      if ( empty($code) ) {
-        $code = $this->_code;
-      }
-
-      $image_code = strtolower(substr($code, 3));
-
-      if ( !is_numeric($width) ) {
-        $width = 16;
-      }
-
-      if ( !is_numeric($height) ) {
-        $height = 10;
-      }
-
-      return osc_image('images/worldflags/' . $image_code . '.png', $this->_languages[$code]['name'], $width, $height, $parameters);
     }
 
     function isDefined($key) {

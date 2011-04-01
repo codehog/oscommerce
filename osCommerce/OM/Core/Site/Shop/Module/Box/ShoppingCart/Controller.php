@@ -1,15 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Module\Box\ShoppingCart;
 
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
   use osCommerce\OM\Core\Registry;
 
@@ -36,7 +35,7 @@
         foreach ( $OSCOM_ShoppingCart->getProducts() as $products ) {
           $this->_content .= '  <tr>' .
                              '    <td align="right" valign="top">' . $products['quantity'] . '&nbsp;x&nbsp;</td>' .
-                             '    <td valign="top">' . osc_link_object(OSCOM::getLink(null, 'Products', $products['keyword']), $products['name']) . '</td>' .
+                             '    <td valign="top">' . HTML::link(OSCOM::getLink(null, 'Products', $products['keyword']), $products['name']) . '</td>' .
                              '  </tr>';
         }
 

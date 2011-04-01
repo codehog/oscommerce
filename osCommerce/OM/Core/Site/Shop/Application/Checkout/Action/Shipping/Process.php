@@ -1,18 +1,17 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Checkout\Action\Shipping;
 
   use osCommerce\OM\Core\ApplicationAbstract;
-  use osCommerce\OM\Core\Registry;
+  use osCommerce\OM\Core\HTML;
   use osCommerce\OM\Core\OSCOM;
+  use osCommerce\OM\Core\Registry;
 
   class Process {
     public static function execute(ApplicationAbstract $application) {
@@ -20,7 +19,7 @@
       $OSCOM_ShoppingCart = Registry::get('ShoppingCart');
 
       if ( !empty($_POST['comments']) ) {
-        $_SESSION['comments'] = osc_sanitize_string($_POST['comments']);
+        $_SESSION['comments'] = HTML::sanitize($_POST['comments']);
       }
 
       if ( $OSCOM_Shipping->hasQuotes() ) {
@@ -35,7 +34,7 @@
             } else {
               $OSCOM_ShoppingCart->setShippingMethod($quote);
 
-              osc_redirect(OSCOM::getLink(null, null, null, 'SSL'));
+              OSCOM::redirect(OSCOM::getLink(null, null, null, 'SSL'));
             }
           } else {
             $OSCOM_ShoppingCart->resetShippingMethod();
@@ -44,7 +43,7 @@
       } else {
         $OSCOM_ShoppingCart->resetShippingMethod();
 
-        osc_redirect(OSCOM::getLink(null, null, null, 'SSL'));
+        OSCOM::redirect(OSCOM::getLink(null, null, null, 'SSL'));
       }
     }
   }

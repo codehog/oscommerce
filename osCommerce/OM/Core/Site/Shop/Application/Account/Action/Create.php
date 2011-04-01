@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Shop\Application\Account\Action;
 
@@ -24,7 +22,7 @@
 // redirect the customer to a friendly cookies-must-be-enabled page if cookies
 // are disabled (or the session has not started)
       if ( $OSCOM_Session->hasStarted() === false ) {
-        osc_redirect(OSCOM::getLink(null, 'Info', 'Cookies'));
+        OSCOM::redirect(OSCOM::getLink(null, 'Info', 'Cookies'));
       }
 
       $application->setPageTitle(OSCOM::getDef('create_account_heading'));
@@ -34,7 +32,7 @@
         $OSCOM_Breadcrumb->add(OSCOM::getDef('breadcrumb_create_account'), OSCOM::getLink(null, null, 'Create', 'SSL'));
       }
 
-      $OSCOM_Template->addJavascriptPhpFilename('includes/form_check.js.php');
+      $OSCOM_Template->addJavascriptPhpFilename(OSCOM::BASE_DIRECTORY . 'Core/Site/Shop/assets/form_check.js.php');
     }
   }
 ?>

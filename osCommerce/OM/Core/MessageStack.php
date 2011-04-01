@@ -1,14 +1,14 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core;
+
+  use osCommerce\OM\Core\HTML;
 
 /**
  * The MessageStack class manages information messages to be displayed.
@@ -151,14 +151,12 @@
               break;
 
             case 'success':
+            default:
               $bullet_image = 'success.gif';
               break;
-
-            default:
-              $bullet_image = 'bullet_default.gif';
           }
 
-          $result .= '<li style="list-style-image: url(\'' . DIR_WS_IMAGES . 'icons/' . $bullet_image . '\')">' . osc_output_string($message['text']) . '</li>';
+          $result .= '<li style="list-style-image: url(\'' . HTML::iconRaw($bullet_image) . '\')">' . HTML::output($message['text']) . '</li>';
         }
 
         $result .= '</ul></div>';
@@ -188,7 +186,7 @@
         $result = '';
 
         foreach ( $this->_data[$group] as $message ) {
-          $result .= osc_output_string($message['text']) . "\n";
+          $result .= HTML::output($message['text']) . "\n";
         }
 
         unset($this->_data[$group]);

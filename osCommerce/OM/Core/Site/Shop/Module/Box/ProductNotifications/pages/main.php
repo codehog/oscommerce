@@ -1,16 +1,16 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+  use osCommerce\OM\Core\HTML;
 ?>
 
-<div class="boxNew">
-  <div class="boxTitle"><?php echo osc_link_object($OSCOM_Box->getTitleLink(), $OSCOM_Box->getTitle()); ?></div>
+<div class="ui-widget boxNew">
+  <div class="ui-widget-header boxTitle"><?php echo HTML::link($OSCOM_Box->getTitleLink(), $OSCOM_Box->getTitle()); ?></div>
 
-  <div class="boxContents"><?php echo $OSCOM_Box->getContent(); ?></div>
+  <div class="ui-widget-content boxContents"><?php echo $OSCOM_Box->getContent(); ?></div>
 </div>

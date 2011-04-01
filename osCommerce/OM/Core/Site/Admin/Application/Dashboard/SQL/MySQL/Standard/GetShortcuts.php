@@ -1,12 +1,10 @@
 <?php
-/*
-  osCommerce Online Merchant $osCommerce-SIG$
-  Copyright (c) 2010 osCommerce (http://www.oscommerce.com)
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License v2 (1991)
-  as published by the Free Software Foundation.
-*/
+/**
+ * osCommerce Online Merchant
+ * 
+ * @copyright Copyright (c) 2011 osCommerce; http://www.oscommerce.com
+ * @license BSD License; http://www.oscommerce.com/bsdlicense.txt
+ */
 
   namespace osCommerce\OM\Core\Site\Admin\Application\Dashboard\SQL\MySQL\Standard;
 
@@ -14,9 +12,9 @@
 
   class GetShortcuts {
     public static function execute($data) {
-      $OSCOM_Database = Registry::get('PDO');
+      $OSCOM_PDO = Registry::get('PDO');
 
-      $Qshortcuts = $OSCOM_Database->prepare('select module, last_viewed from :table_administrator_shortcuts where administrators_id = :administrators_id');
+      $Qshortcuts = $OSCOM_PDO->prepare('select module, last_viewed from :table_administrator_shortcuts where administrators_id = :administrators_id');
       $Qshortcuts->bindInt(':administrators_id', $data['admin_id']);
       $Qshortcuts->execute();
 
