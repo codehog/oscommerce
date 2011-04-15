@@ -50,6 +50,12 @@
     $http_dir_ws .= '/';
   }
 
+  $http_cookie_domain = '';
+
+  if ( (substr_count($http_url['host'], '.') > 1) && !filter_var($http_url['host'], FILTER_VALIDATE_IP) ) {
+    $http_cookie_domain = $http_url['host'];
+  }
+
   $dir_fs_document_root = realpath(OSCOM::BASE_DIRECTORY . '../../') . '/';
 
   $DL_Cache = new DirectoryListing(OSCOM::BASE_DIRECTORY . 'Work/Cache');
@@ -73,8 +79,8 @@ dir_fs_public = "{$dir_fs_document_root}public/"
 enable_ssl = "false"
 http_server = "$http_server"
 https_server = "$http_server"
-http_cookie_domain = ""
-https_cookie_domain = ""
+http_cookie_domain = "$http_cookie_domain"
+https_cookie_domain = "$http_cookie_domain"
 http_cookie_path = "$http_dir_ws"
 https_cookie_path = "$http_dir_ws"
 dir_ws_http_server = "$http_dir_ws"
@@ -93,8 +99,8 @@ store_sessions = "Database"
 enable_ssl = "false"
 http_server = "$http_server"
 https_server = "$http_server"
-http_cookie_domain = ""
-https_cookie_domain = ""
+http_cookie_domain = "$http_cookie_domain"
+https_cookie_domain = "$http_cookie_domain"
 http_cookie_path = "$http_dir_ws"
 https_cookie_path = "$http_dir_ws"
 dir_ws_http_server = "$http_dir_ws"
@@ -103,26 +109,6 @@ product_images_http_server = ""
 product_images_https_server = ""
 product_images_dir_ws_http_server = "{$http_dir_ws}public/products/"
 product_images_dir_ws_https_server = "{$http_dir_ws}public/products/"
-db_server = "{$_POST['DB_SERVER']}"
-db_server_username = "{$_POST['DB_SERVER_USERNAME']}"
-db_server_password = "{$_POST['DB_SERVER_PASSWORD']}"
-db_server_port = "{$_POST['DB_SERVER_PORT']}"
-db_database = "{$_POST['DB_DATABASE']}"
-db_driver = "$db_class"
-db_table_prefix = "{$_POST['DB_TABLE_PREFIX']}"
-db_server_persistent_connections = "false"
-store_sessions = "Database"
-
-[RPC]
-enable_ssl = "false"
-http_server = "$http_server"
-https_server = "$http_server"
-http_cookie_domain = ""
-https_cookie_domain = ""
-http_cookie_path = "$http_dir_ws"
-https_cookie_path = "$http_dir_ws"
-dir_ws_http_server = "$http_dir_ws"
-dir_ws_https_server = "$http_dir_ws"
 db_server = "{$_POST['DB_SERVER']}"
 db_server_username = "{$_POST['DB_SERVER_USERNAME']}"
 db_server_password = "{$_POST['DB_SERVER_PASSWORD']}"
