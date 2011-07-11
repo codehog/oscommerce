@@ -27,7 +27,7 @@
 <meta name="generator" value="osCommerce Online Merchant" />
 <meta name="robots" content="noindex,nofollow" />
 
-<script type="text/javascript" src="public/external/jquery/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="public/external/jquery/jquery-1.6.1.min.js"></script>
 <script type="text/javascript" src="public/external/jquery/jquery.cookie.js"></script>
 <script type="text/javascript" src="public/external/jquery/jquery.json-2.2.min.js"></script>
 <script type="text/javascript" src="public/external/jquery/jquery.tinysort.min.js"></script>
@@ -35,12 +35,20 @@
 <script type="text/javascript" src="public/external/jquery/jquery.hoverIntent.minified.js"></script>
 <script type="text/javascript" src="public/external/jquery/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="public/external/jquery/jquery.droppy.js"></script>
+<script type="text/javascript" src="public/external/jquery/jquery.blockUI.js"></script>
+<script type="text/javascript" src="public/external/jquery/jquery.md5.js"></script>
 
 <script type="text/javascript" src="public/external/jquery/tipsy/jquery.tipsy.js"></script>
 <link rel="stylesheet" type="text/css" href="public/external/jquery/tipsy/tipsy.css" />
 
-<link rel="stylesheet" type="text/css" href="public/external/jquery/ui/themes/smoothness/jquery-ui-1.8.11.custom.css" />
-<script type="text/javascript" src="public/external/jquery/ui/jquery-ui-1.8.11.custom.min.js"></script>
+<script src="public/external/jquery/jquery.netchanger.min.js"></script>
+<script src="public/external/jquery/jquery.safetynet.js"></script>
+
+<script src="public/sites/Admin/javascript/jquery/jquery.buttonsetTabs.js"></script>
+<script src="public/sites/Admin/javascript/jquery/jquery.equalResize.js"></script>
+
+<link rel="stylesheet" type="text/css" href="public/external/jquery/ui/themes/smoothness/jquery-ui-1.8.13.custom.css" />
+<script type="text/javascript" src="public/external/jquery/ui/jquery-ui-1.8.13.custom.min.js"></script>
 
 <script type="text/javascript" src="public/external/alexei/sprintf.js"></script>
 
