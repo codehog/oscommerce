@@ -56,7 +56,7 @@
     $http_cookie_domain = $http_url['host'];
   }
 
-  $dir_fs_document_root = realpath(OSCOM::BASE_DIRECTORY . '../../') . '/';
+  $dir_fs_document_root = OSCOM_PUBLIC_BASE_DIRECTORY;
 
   $DL_Cache = new DirectoryListing(OSCOM::BASE_DIRECTORY . 'Work/Cache');
   $DL_Cache->setIncludeDirectories(false);
@@ -118,6 +118,9 @@ db_driver = "$db_class"
 db_table_prefix = "{$_POST['DB_TABLE_PREFIX']}"
 db_server_persistent_connections = "false"
 store_sessions = "Database"
+
+[Setup]
+offline = "true"
 EOT;
 
   if ( is_writable(OSCOM::BASE_DIRECTORY . 'Config/settings.ini') ) {

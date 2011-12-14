@@ -12,7 +12,7 @@
 
   class Controller extends \osCommerce\OM\Core\Site\Setup\ApplicationAbstract {
     protected function initialize() {
-      $this->_page_title = OSCOM::getDef('heading_title');
+      $this->_page_title = OSCOM::getDef('page_title_welcome');
     }
   }
 ?>
